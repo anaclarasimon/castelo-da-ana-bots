@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Castelo da Ana Bots</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="royal-bar">
+    <div class="ornament"></div>
+    <span class="crown">♛</span>
+    <div class="ornament"></div>
+  </header>
+
+  <main class="hero">
+    <div class="shade"></div>
+
+    <section class="bot-showcase" aria-label="Bots">
+      <button class="arrow" id="prev" aria-label="Bot anterior">‹</button>
+
+      <div class="bot-content">
+        <div class="profile-ring">
+          <img id="bot-image" src="img/aninha-lofi.png" alt="Aninha LoFi">
+        </div>
+
+        <h1 id="bot-name">Aninha</h1>
+        <div class="bot-type" id="bot-type">LoFi</div>
+
+        <p id="bot-description">
+          A Aninha é nosso bot de LoFi, criada para deixar seu servidor
+          mais tranquilo e aconchegante. Ela entra na call, toca estações
+          LoFi 24 horas e permite trocar entre diferentes estações.
+        </p>
+
+        <div class="features">
+          <div class="feature">
+            <span>♫</span>
+            <small>Música LoFi</small>
+          </div>
+          <div class="feature">
+            <span>🔊</span>
+            <small>LoFi 24 horas</small>
+          </div>
+          <div class="feature">
+            <span>🎚</span>
+            <small>Troca de estações</small>
+          </div>
+        </div>
+
+        <button class="commands-btn" id="commands-btn">Ver comandos</button>
+
+        <div class="dots" id="dots" aria-label="Selecionar bot"></div>
+      </div>
+
+      <button class="arrow" id="next" aria-label="Próximo bot">›</button>
+    </section>
+  </main>
+
+  <div class="commands-modal" id="commands-modal" aria-hidden="true">
+    <div class="commands-overlay" id="commands-overlay"></div>
+    <section class="commands-panel" role="dialog" aria-modal="true" aria-labelledby="commands-title">
+      <button class="commands-close" id="commands-close" aria-label="Fechar">×</button>
+      <div class="commands-heading">
+        <span>♬</span>
+        <h2 id="commands-title">Comandos da Aninha</h2>
+      </div>
+
+      <div class="command-card">
+        <div class="command-top">
+          <code>/radio</code>
+          <span>LoFi</span>
+        </div>
+        <p>Troca a estação de LoFi que a Aninha está tocando na call.</p>
+        <p class="command-note">Escolha uma das estações disponíveis:</p>
+        <div class="station-list">
+          <span>🌙 Chilling</span>
+          <span>📚 Studying</span>
+          <span>💻 Working</span>
+          <span>😴 Sleeping</span>
+          <span>🎮 Gaming</span>
+          <span>🌸 Japanese Lofi</span>
+        </div>
+        <p class="command-note">O comando pode ser usado no canal de comandos ou enquanto você estiver na call de LoFi.</p>
+      </div>
+    </section>
+  </div>
+
+  <footer class="royal-bar bottom">
+    <div class="ornament"></div>
+    <span class="crown">♛</span>
+    <div class="ornament"></div>
+  </footer>
+
+  <script>
+    const bots = [
+      {
+        name: "Aninha",
+        type: "LoFi",
+        image: "img/aninha-lofi.png",
+        description:
+          "A Aninha é nosso bot de LoFi, criada para deixar seu servidor mais tranquilo e aconchegante. Ela entra na call, toca estações LoFi 24 horas e permite trocar entre diferentes estações."
+      }
+      // Quando criar outro bot, ele entra aqui como um novo objeto.
+    ];
+
+    let current = 0;
+
+    const image = document.getElementById("bot-image");
+    const name = document.getElementById("bot-name");
+    const type = document.getElementById("bot-type");
+    const description = document.getElementById("bot-description");
+    const dots = document.getElementById("dots");
+    const commandsBtn = document.getElementById("commands-btn");
+    const commandsModal = document.getElementById("commands-modal");
+    const commandsClose = document.getElementById("commands-close");
+    const commandsOverlay = document.getElementById("commands-overlay");
+
+    function openCommands() {
+      commandsModal.classList.add("open");
+      commandsModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeCommands() {
+      commandsModal.classList.remove("open");
+      commandsModal.setAttribute("aria-hidden", "true");
+    }
+
+    commandsBtn.addEventListener("click", openCommands);
+    commandsClose.addEventListener("click", closeCommands);
+    commandsOverlay.addEventListener("click", closeCommands);
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeCommands();
+    });
+
+    function renderDots() {
+      dots.innerHTML = "";
+      bots.forEach((_, index) => {
+        const dot = document.createElement("button");
+        dot.className = "dot" + (index === current ? " active" : "");
+        dot.setAttribute("aria-label", `Selecionar ${bots[index].name}`);
+        dot.addEventListener("click", () => {
+          current = index;
+          render();
+        });
+        dots.appendChild(dot);
+      });
+    }
+
+    function render() {
+      const bot = bots[current];
+      image.src = bot.image;
+      image.alt = bot.name;
+      name.textContent = bot.name;
+      type.textContent = bot.type;
+      description.textContent = bot.description;
+      renderDots();
+    }
+
+    document.getElementById("prev").addEventListener("click", () => {
+      current = (current - 1 + bots.length) % bots.length;
+      render();
+    });
+
+    document.getElementById("next").addEventListener("click", () => {
+      current = (current + 1) % bots.length;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
