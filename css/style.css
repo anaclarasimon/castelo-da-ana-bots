@@ -435,3 +435,5 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+.command-section-title{margin:20px 0 10px;color:#f4d99a;font-family:Cinzel,serif;font-size:18px}.command-section-title:first-child{margin-top:0}.command-card+.command-card{margin-top:10px}.commands-footnote{margin-top:18px;color:#e5d8c7;font-size:12px;line-height:1.6;text-align:center}.commands-panel{max-height:90vh}

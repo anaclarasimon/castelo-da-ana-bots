@@ -8,51 +8,22 @@
 </head>
 <body>
   <header class="royal-bar">
-    <div class="ornament"></div>
-    <span class="crown">♛</span>
-    <div class="ornament"></div>
+    <div class="ornament"></div><span class="crown">♛</span><div class="ornament"></div>
   </header>
 
   <main class="hero">
     <div class="shade"></div>
-
     <section class="bot-showcase" aria-label="Bots">
       <button class="arrow" id="prev" aria-label="Bot anterior">‹</button>
-
       <div class="bot-content">
-        <div class="profile-ring">
-          <img id="bot-image" src="img/aninha-lofi.png" alt="Aninha LoFi">
-        </div>
-
+        <div class="profile-ring"><img id="bot-image" src="img/aninha-lofi.png" alt="Aninha"></div>
         <h1 id="bot-name">Aninha</h1>
         <div class="bot-type" id="bot-type">LoFi</div>
-
-        <p id="bot-description">
-          A Aninha é nosso bot de LoFi, criada para deixar seu servidor
-          mais tranquilo e aconchegante. Ela entra na call, toca estações
-          LoFi 24 horas e permite trocar entre diferentes estações.
-        </p>
-
-        <div class="features">
-          <div class="feature">
-            <span>♫</span>
-            <small>Música LoFi</small>
-          </div>
-          <div class="feature">
-            <span>🔊</span>
-            <small>LoFi 24 horas</small>
-          </div>
-          <div class="feature">
-            <span>🎚</span>
-            <small>Troca de estações</small>
-          </div>
-        </div>
-
+        <p id="bot-description"></p>
+        <div class="features" id="features"></div>
         <button class="commands-btn" id="commands-btn">Ver comandos</button>
-
         <div class="dots" id="dots" aria-label="Selecionar bot"></div>
       </div>
-
       <button class="arrow" id="next" aria-label="Próximo bot">›</button>
     </section>
   </main>
@@ -61,113 +32,61 @@
     <div class="commands-overlay" id="commands-overlay"></div>
     <section class="commands-panel" role="dialog" aria-modal="true" aria-labelledby="commands-title">
       <button class="commands-close" id="commands-close" aria-label="Fechar">×</button>
-      <div class="commands-heading">
-        <span>♬</span>
-        <h2 id="commands-title">Comandos da Aninha</h2>
-      </div>
-
-      <div class="command-card">
-        <div class="command-top">
-          <code>/radio</code>
-          <span>LoFi</span>
-        </div>
-        <p>Troca a estação de LoFi que a Aninha está tocando na call.</p>
-        <p class="command-note">Escolha uma das estações disponíveis:</p>
-        <div class="station-list">
-          <span>🌙 Chilling</span>
-          <span>📚 Studying</span>
-          <span>💻 Working</span>
-          <span>😴 Sleeping</span>
-          <span>🎮 Gaming</span>
-          <span>🌸 Japanese Lofi</span>
-        </div>
-        <p class="command-note">O comando pode ser usado no canal de comandos ou enquanto você estiver na call de LoFi.</p>
-      </div>
+      <div class="commands-heading"><span>♬</span><h2 id="commands-title">Comandos</h2></div>
+      <div id="commands-content"></div>
     </section>
   </div>
 
   <footer class="royal-bar bottom">
-    <div class="ornament"></div>
-    <span class="crown">♛</span>
-    <div class="ornament"></div>
+    <div class="ornament"></div><span class="crown">♛</span><div class="ornament"></div>
   </footer>
 
-  <script>
-    const bots = [
-      {
-        name: "Aninha",
-        type: "LoFi",
-        image: "img/aninha-lofi.png",
-        description:
-          "A Aninha é nosso bot de LoFi, criada para deixar seu servidor mais tranquilo e aconchegante. Ela entra na call, toca estações LoFi 24 horas e permite trocar entre diferentes estações."
-      }
-      // Quando criar outro bot, ele entra aqui como um novo objeto.
-    ];
-
-    let current = 0;
-
-    const image = document.getElementById("bot-image");
-    const name = document.getElementById("bot-name");
-    const type = document.getElementById("bot-type");
-    const description = document.getElementById("bot-description");
-    const dots = document.getElementById("dots");
-    const commandsBtn = document.getElementById("commands-btn");
-    const commandsModal = document.getElementById("commands-modal");
-    const commandsClose = document.getElementById("commands-close");
-    const commandsOverlay = document.getElementById("commands-overlay");
-
-    function openCommands() {
-      commandsModal.classList.add("open");
-      commandsModal.setAttribute("aria-hidden", "false");
+<script>
+const bots = [
+  {
+    name: "Aninha", type: "LoFi", image: "img/aninha-lofi.png",
+    description: "A Aninha é nosso bot de LoFi, criada para deixar seu servidor mais tranquilo e aconchegante. Ela entra na call, toca estações LoFi 24 horas e permite trocar entre diferentes estações.",
+    features: [["♫","Música LoFi"],["🔊","LoFi 24 horas"],["🎚","Troca de estações"]],
+    commands: {
+      public: [{name:"/radio", type:"LoFi", description:"Troca a estação de LoFi que a Aninha está tocando na call.", extra:"Escolha uma das estações disponíveis:", stations:["🌙 Chilling","📚 Studying","💻 Working","😴 Sleeping","🎮 Gaming","🌸 Japanese Lofi"], note:"O comando pode ser usado no canal de comandos ou enquanto você estiver na call de LoFi."}],
+      private: []
     }
-
-    function closeCommands() {
-      commandsModal.classList.remove("open");
-      commandsModal.setAttribute("aria-hidden", "true");
+  },
+  {
+    name: "Minju", type: "Comandos gerais", image: "img/minju.webp",
+    description: "A Minju é o bot de comandos gerais do servidor. Ela reúne ferramentas para consultar informações, visualizar ícones e banners e também funções administrativas.",
+    features: [["⚙","Comandos gerais"],["🏰","Informações do servidor"],["🛠","Ferramentas administrativas"]],
+    commands: {
+      public: [
+        {name:"/icone_servidor", type:"Público", description:"Mostra o ícone atual do servidor."},
+        {name:"/icone_usuario", type:"Público", description:"Mostra o avatar de um usuário. Se o usuário não for informado, mostra o seu próprio avatar."},
+        {name:"/servidor info", type:"Público", description:"Mostra informações do servidor, como ID, dono, quantidade de canais, data de criação, quando você entrou e número de membros."},
+        {name:"/banner servidor", type:"Público", description:"Mostra o banner atual do servidor, quando houver um configurado."},
+        {name:"/banner usuario", type:"Público", description:"Mostra o banner de um usuário. Se o usuário não for informado, mostra o seu próprio banner."},
+        {name:"/funcionamento", type:"Público", description:"Explica como funcionam os comandos da Minju e mostra a separação entre comandos públicos e privados."}
+      ],
+      private: [
+        {name:"/emoji add", type:"Somente dona", description:"Adiciona um emoji personalizado ao servidor a partir de um emoji personalizado do Discord. É necessário ter permissão para gerenciar expressões."},
+        {name:"/apagar_mensagem", type:"Somente dona", description:"Apaga mensagens do canal. Permite escolher de 1 a 1000 mensagens e, opcionalmente, limitar a limpeza às mensagens de um usuário específico."}
+      ]
     }
+  }
+];
 
-    commandsBtn.addEventListener("click", openCommands);
-    commandsClose.addEventListener("click", closeCommands);
-    commandsOverlay.addEventListener("click", closeCommands);
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") closeCommands();
-    });
+let current=0;
+const image=document.getElementById('bot-image'), name=document.getElementById('bot-name'), type=document.getElementById('bot-type'), description=document.getElementById('bot-description'), features=document.getElementById('features'), dots=document.getElementById('dots');
+const commandsBtn=document.getElementById('commands-btn'), modal=document.getElementById('commands-modal'), close=document.getElementById('commands-close'), overlay=document.getElementById('commands-overlay'), content=document.getElementById('commands-content'), title=document.getElementById('commands-title');
 
-    function renderDots() {
-      dots.innerHTML = "";
-      bots.forEach((_, index) => {
-        const dot = document.createElement("button");
-        dot.className = "dot" + (index === current ? " active" : "");
-        dot.setAttribute("aria-label", `Selecionar ${bots[index].name}`);
-        dot.addEventListener("click", () => {
-          current = index;
-          render();
-        });
-        dots.appendChild(dot);
-      });
-    }
-
-    function render() {
-      const bot = bots[current];
-      image.src = bot.image;
-      image.alt = bot.name;
-      name.textContent = bot.name;
-      type.textContent = bot.type;
-      description.textContent = bot.description;
-      renderDots();
-    }
-
-    document.getElementById("prev").addEventListener("click", () => {
-      current = (current - 1 + bots.length) % bots.length;
-      render();
-    });
-
-    document.getElementById("next").addEventListener("click", () => {
-      current = (current + 1) % bots.length;
-      render();
-    });
-
-    render();
-  </script>
-</body>
-</html>
+function renderFeatures(bot){features.innerHTML=''; bot.features.forEach(f=>{features.innerHTML+=`<div class="feature"><span>${f[0]}</span><small>${f[1]}</small></div>`});}
+function commandCard(c){let html=`<div class="command-card"><div class="command-top"><code>${c.name}</code><span>${c.type}</span></div><p>${c.description}</p>`; if(c.extra) html+=`<p class="command-note">${c.extra}</p><div class="station-list">${c.stations.map(s=>`<span>${s}</span>`).join('')}</div>`; if(c.note) html+=`<p class="command-note">${c.note}</p>`; return html+'</div>';}
+function renderCommands(){const bot=bots[current]; title.textContent=`Comandos da ${bot.name}`; let html=''; if(bot.commands.public.length){html+=`<h3 class="command-section-title">🟢 Comandos públicos</h3>`+bot.commands.public.map(commandCard).join('');} if(bot.commands.private.length){html+=`<h3 class="command-section-title">🔒 Comandos privados</h3>`+bot.commands.private.map(commandCard).join('');} if(bot.name==='Minju') html+=`<p class="commands-footnote">Os comandos públicos da Minju só podem ser usados no canal configurado como #comandos. Os comandos privados do código atual são exclusivos da dona do bot.</p>`; content.innerHTML=html;}
+function openCommands(){renderCommands(); modal.classList.add('open'); modal.setAttribute('aria-hidden','false');}
+function closeCommands(){modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');}
+commandsBtn.addEventListener('click',openCommands); close.addEventListener('click',closeCommands); overlay.addEventListener('click',closeCommands); document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCommands();});
+function renderDots(){dots.innerHTML=''; bots.forEach((b,i)=>{const d=document.createElement('button'); d.className='dot'+(i===current?' active':''); d.setAttribute('aria-label',`Selecionar ${b.name}`); d.addEventListener('click',()=>{current=i;render();}); dots.appendChild(d);});}
+function render(){const b=bots[current]; image.src=b.image; image.alt=b.name; name.textContent=b.name; type.textContent=b.type; description.textContent=b.description; renderFeatures(b); renderDots();}
+document.getElementById('prev').addEventListener('click',()=>{current=(current-1+bots.length)%bots.length;render();});
+document.getElementById('next').addEventListener('click',()=>{current=(current+1)%bots.length;render();});
+render();
+</script>
+</body></html>
