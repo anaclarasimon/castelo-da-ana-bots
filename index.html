@@ -13,6 +13,7 @@
 
   <main class="hero">
     <div class="shade"></div>
+    <div class="cursor-light" id="cursor-light" aria-hidden="true"></div>
     <section class="bot-showcase" aria-label="Bots">
       <button class="arrow" id="prev" aria-label="Bot anterior">‹</button>
       <div class="bot-content">
@@ -70,6 +71,21 @@ const bots = [
         {name:"/apagar_mensagem", type:"Somente dona", description:"Apaga mensagens do canal. Permite escolher de 1 a 1000 mensagens e, opcionalmente, limitar a limpeza às mensagens de um usuário específico."}
       ]
     }
+  },
+  {
+    name: "Jorel", type: "Eleições", image: "img/jorel-eleicoes.png",
+    background: "img/fundo-brasil-2026.webp",
+    cursorLight: "gold",
+    description: "O Jorel é o bot de eleições do servidor. Ele acompanha automaticamente a apuração para Presidente em 2026 e mantém as informações do canal de eleições atualizadas sozinho.",
+    features: [["🗳", "Eleições"],["🇧🇷", "Brasil"],["🔄", "Atualização automática"]],
+    commands: {
+      public: [],
+      private: [
+        {name:"/apuracao", type:"Somente dona", description:"Força uma atualização imediata da apuração para Presidente."},
+        {name:"/atualizar", type:"Somente dona", description:"Força manualmente a atualização da apuração."}
+      ],
+      automatic: "O Jorel consulta os dados automaticamente a cada 3 segundos e só edita a mensagem do canal quando os dados mudam."
+    }
   }
 ];
 
@@ -79,14 +95,22 @@ const commandsBtn=document.getElementById('commands-btn'), modal=document.getEle
 
 function renderFeatures(bot){features.innerHTML=''; bot.features.forEach(f=>{features.innerHTML+=`<div class="feature"><span>${f[0]}</span><small>${f[1]}</small></div>`});}
 function commandCard(c){let html=`<div class="command-card"><div class="command-top"><code>${c.name}</code><span>${c.type}</span></div><p>${c.description}</p>`; if(c.extra) html+=`<p class="command-note">${c.extra}</p><div class="station-list">${c.stations.map(s=>`<span>${s}</span>`).join('')}</div>`; if(c.note) html+=`<p class="command-note">${c.note}</p>`; return html+'</div>';}
-function renderCommands(){const bot=bots[current]; title.textContent=`Comandos da ${bot.name}`; let html=''; if(bot.commands.public.length){html+=`<h3 class="command-section-title">🟢 Comandos públicos</h3>`+bot.commands.public.map(commandCard).join('');} if(bot.commands.private.length){html+=`<h3 class="command-section-title">🔒 Comandos privados</h3>`+bot.commands.private.map(commandCard).join('');} if(bot.name==='Minju') html+=`<p class="commands-footnote">Os comandos públicos da Minju só podem ser usados no canal configurado como #comandos. Os comandos privados do código atual são exclusivos da dona do bot.</p>`; content.innerHTML=html;}
+function renderCommands(){const bot=bots[current]; title.textContent=`Comandos da ${bot.name}`; let html=''; if(bot.commands.public.length){html+=`<h3 class="command-section-title">🟢 Comandos públicos</h3>`+bot.commands.public.map(commandCard).join('');} if(bot.commands.private.length){html+=`<h3 class="command-section-title">🔒 Comandos privados</h3>`+bot.commands.private.map(commandCard).join('');} if(bot.commands.automatic){html+=`<h3 class="command-section-title">🔄 Automático</h3><div class="command-card automatic-card"><p>${bot.commands.automatic}</p></div>`;} if(bot.name==='Minju') html+=`<p class="commands-footnote">Os comandos públicos da Minju só podem ser usados no canal configurado como #comandos. Os comandos privados do código atual são exclusivos da dona do bot.</p>`; if(bot.name==='Jorel') html+=`<p class="commands-footnote">O Jorel fica no canal de eleições configurado para ele e faz a atualização automaticamente. Não é necessário usar um comando para manter a apuração atualizada.</p>`; content.innerHTML=html;}
 function openCommands(){renderCommands(); modal.classList.add('open'); modal.setAttribute('aria-hidden','false');}
 function closeCommands(){modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');}
 commandsBtn.addEventListener('click',openCommands); close.addEventListener('click',closeCommands); overlay.addEventListener('click',closeCommands); document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCommands();});
 function renderDots(){dots.innerHTML=''; bots.forEach((b,i)=>{const d=document.createElement('button'); d.className='dot'+(i===current?' active':''); d.setAttribute('aria-label',`Selecionar ${b.name}`); d.addEventListener('click',()=>{current=i;render();}); dots.appendChild(d);});}
-function render(){const b=bots[current]; image.src=b.image; image.alt=b.name; name.textContent=b.name; type.textContent=b.type; description.textContent=b.description; renderFeatures(b); renderDots();}
+function render(){const b=bots[current]; image.src=b.image; image.alt=b.name; name.textContent=b.name; type.textContent=b.type; description.textContent=b.description; const hero=document.querySelector('.hero'); hero.style.backgroundImage=`url("${b.background || 'img/fundo-castelo.png'}")`; hero.classList.toggle('jorel-active', b.cursorLight === 'gold'); hero.classList.toggle('pink-active', b.cursorLight === 'pink'); renderFeatures(b); renderDots();}
 document.getElementById('prev').addEventListener('click',()=>{current=(current-1+bots.length)%bots.length;render();});
 document.getElementById('next').addEventListener('click',()=>{current=(current+1)%bots.length;render();});
+const cursorLight=document.getElementById('cursor-light');
+const hero=document.querySelector('.hero');
+hero.addEventListener('mousemove',e=>{
+  if(!hero.classList.contains('jorel-active')) return;
+  const r=hero.getBoundingClientRect();
+  cursorLight.style.left=(e.clientX-r.left)+'px';
+  cursorLight.style.top=(e.clientY-r.top)+'px';
+});
 render();
 </script>
 </body></html>

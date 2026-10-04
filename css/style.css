@@ -58,8 +58,8 @@ body {
 .hero {
   min-height: calc(100vh - 116px);
   position: relative;
-  background:
-    url("../img/fundo-castelo.png") center center / cover no-repeat;
+  background: url("../img/fundo-castelo.png") center center / cover no-repeat;
+  transition: background-image .45s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -437,3 +437,48 @@ h1 {
 }
 
 .command-section-title{margin:20px 0 10px;color:#f4d99a;font-family:Cinzel,serif;font-size:18px}.command-section-title:first-child{margin-top:0}.command-card+.command-card{margin-top:10px}.commands-footnote{margin-top:18px;color:#e5d8c7;font-size:12px;line-height:1.6;text-align:center}.commands-panel{max-height:90vh}
+/* ============================================================
+   LUZ DO CURSOR — APENAS NA ABA DO JOREL
+   ============================================================ */
+.cursor-light {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 280px;
+  height: 280px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  background: radial-gradient(circle, rgba(255, 220, 120, .28) 0%, rgba(255, 194, 60, .12) 28%, rgba(255, 194, 60, 0) 68%);
+  filter: blur(4px);
+  transition: opacity .25s ease;
+  mix-blend-mode: screen;
+}
+
+.hero.jorel-active .cursor-light {
+  opacity: 1;
+}
+
+.hero.jorel-active .shade {
+  background:
+    radial-gradient(circle at 50% 45%, rgba(20, 8, 16, .02), rgba(10, 5, 10, .34)),
+    linear-gradient(90deg, rgba(10, 5, 10, .10), rgba(10, 5, 10, .22));
+}
+
+/* Luz rosa do cursor para Aninha e Minju */
+.hero.pink-active .cursor-light {
+  opacity: 1;
+  background: radial-gradient(circle, rgba(255, 150, 220, .28) 0%, rgba(255, 105, 190, .12) 28%, rgba(255, 105, 190, 0) 68%);
+}
+
+.hero.pink-active .shade {
+  background:
+    radial-gradient(circle at 50% 45%, rgba(20, 8, 16, .03), rgba(10, 5, 10, .40)),
+    linear-gradient(90deg, rgba(10, 5, 10, .12), rgba(10, 5, 10, .25));
+}
+
+.automatic-card {
+  border-color: rgba(255, 220, 120, .28);
+}
